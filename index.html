@@ -1,10 +1,11 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE ACID MACHINE v0.31</title><style>
+<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE ACID MACHINE v0.32</title><style>
 :root{color-scheme:dark;font-family:system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;background:#080c0a;color:#e5f2e7}.wrap{max-width:1100px;margin:auto;padding:26px}header{display:flex;justify-content:space-between;align-items:center;gap:20px}h1{font-size:clamp(24px,5vw,43px);letter-spacing:.09em;margin:0}small,.muted{color:#8aab94}.badge{color:#b8ff57;border:1px solid #44652d;border-radius:30px;padding:8px 13px;font-size:12px;white-space:nowrap}.screen{position:relative;border:1px solid #334438;border-radius:18px;overflow:hidden;margin:24px 0;background:#050907}canvas{width:100%;height:330px;display:block}.hud{position:absolute;left:18px;right:18px;bottom:16px;display:flex;justify-content:space-between;font:12px monospace;color:#b8ff57}.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}button{border:1px solid #80af3f;border-radius:8px;background:#b8ff57;color:#101b08;padding:13px 22px;font-weight:800;cursor:pointer}button.secondary{background:#17231b;color:#c2d6c7;border-color:#3c5041}button:disabled{opacity:.35;cursor:default}.panel{margin-top:20px;background:#111b15;border:1px solid #304436;padding:20px;border-radius:14px}.knobs{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}label{display:flex;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.08em}input{width:100%;accent-color:#b8ff57;margin:15px 0 0}.voices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.voice{padding:16px;background:#0c140f;border:1px solid #293b2e;border-radius:10px}.voice small{font:10px monospace;letter-spacing:.12em}.voice strong{display:block;font-size:15px;margin:7px 0}.voice span{font-size:11px;color:#a0bcaa}.steps{display:grid;grid-template-columns:repeat(16,1fr);gap:5px;margin-top:18px}.step{height:22px;border-radius:3px;background:#283b2c}.step.note{background:#507c36}.step.on{background:#cbff8c;box-shadow:0 0 12px #aaff66}.journey{display:flex;gap:5px;margin:20px 0 8px}.stage{flex:1;height:4px;background:#293b2e}.stage.active{background:#b8ff57}.info{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#9fb6a5;line-height:1.6}footer{margin-top:22px;color:#6d8a77;font-size:11px;line-height:1.7}@media(max-width:650px){.wrap{padding:16px}.knobs,.voices{grid-template-columns:repeat(2,1fr)}canvas{height:270px}header{align-items:flex-start}.badge{display:none}.info{display:block}.steps{gap:3px}}
-</style><div class="wrap"><header><div><h1>THE ACID MACHINE</h1><small>v0.31 · MUTATION → TAKEOVER → SYNTHESIS</small></div><span class="badge">Kris &amp; Omnia · 01</span></header><div class="screen"><canvas id="viz"></canvas><div class="hud"><span id="phase">READY TO MUTATE</span><span id="clock">00:00 · 120 BPM</span></div></div><div class="actions"><button id="start">▶ START</button><button id="stop" class="secondary" disabled>■ STOP</button><button id="chaos" class="secondary" disabled>⚡ CHAOS</button><span class="muted" id="status">Eén groove. Een voortdurend veranderende wereld.</span></div><div class="panel"><div class="knobs"><div><label>DRIVE <output id="driveV">45%</output></label><input id="drive" aria-label="Drive" type="range" min="0" max="100" value="45"></div><div><label>MUTATIE <output id="mutationV">55%</output></label><input id="mutation" aria-label="Mutatie" type="range" min="0" max="100" value="55"></div><div><label>RUIMTE <output id="spaceV">40%</output></label><input id="space" aria-label="Echo en galm" type="range" min="0" max="100" value="40"></div><div><label>VOLUME <output id="volumeV">65%</output></label><input id="volume" aria-label="Volume" type="range" min="0" max="100" value="65"></div></div><label style="justify-content:flex-start;align-items:center;margin-top:18px;cursor:pointer"><input id="pianoEnabled" type="checkbox" checked style="width:18px;height:18px;margin:0 9px 0 0">Piano aan <span class="muted">· uit: acid neemt de bovenlijn over</span></label><div class="voices" id="voices"></div><div class="steps" id="steps"></div><div class="journey" id="journey"></div><div class="info"><span id="detail">Begin bij 120 BPM · lange overgangen · autonome compositie</span><span id="next">Overnames om de 40–60 seconden</span></div></div><div class="panel"><small>MIXER · 100% = huidige balans</small><div class="knobs" style="margin-top:18px"><div><label for="mix_acid">ACID<output id="mix_acidV">100%</output></label><input id="mix_acid" aria-label="Volume ACID" type="range" min="0" max="150" value="100"></div><div><label for="mix_trance">TRANCELEAD<output id="mix_tranceV">100%</output></label><input id="mix_trance" aria-label="Volume TRANCELEAD" type="range" min="0" max="150" value="100"></div><div><label for="mix_bass">BAS<output id="mix_bassV">100%</output></label><input id="mix_bass" aria-label="Volume BAS" type="range" min="0" max="150" value="100"></div><div><label for="mix_pad">PAD<output id="mix_padV">100%</output></label><input id="mix_pad" aria-label="Volume PAD" type="range" min="0" max="150" value="100"></div><div><label for="mix_drums">DRUMS<output id="mix_drumsV">100%</output></label><input id="mix_drums" aria-label="Volume DRUMS" type="range" min="0" max="150" value="100"></div><div><label for="mix_piano">PIANO<output id="mix_pianoV">100%</output></label><input id="mix_piano" aria-label="Volume PIANO" type="range" min="0" max="150" value="100"></div><div><label for="mix_companion">TEGENSTEM<output id="mix_companionV">100%</output></label><input id="mix_companion" aria-label="Volume TEGENSTEM" type="range" min="0" max="150" value="100"></div><div><label for="mix_gothic">GOTHIC<output id="mix_gothicV">100%</output></label><input id="mix_gothic" aria-label="Volume GOTHIC" type="range" min="0" max="150" value="100"></div><div><label for="mix_strings">VIOOL<output id="mix_stringsV">100%</output></label><input id="mix_strings" aria-label="Volume VIOOL" type="range" min="0" max="150" value="100"></div></div></div><footer>Zelfstandige Web Audio-synthese · offline bruikbaar · geen samples of externe bestanden.<br>CHAOS geeft tijdelijk extra mutatie en filterspanning; de groove vindt daarna haar weg terug.</footer></div><script>
+</style><div class="wrap"><header><div><h1>THE ACID MACHINE</h1><small>v0.32 · MUTATION → TAKEOVER → SYNTHESIS</small></div><span class="badge">Kris &amp; Omnia · 01</span></header><div class="screen"><canvas id="viz"></canvas><div class="hud"><span id="phase">READY TO MUTATE</span><span id="clock">00:00 · 120 BPM</span></div></div><div class="actions"><button id="start">▶ START</button><button id="stop" class="secondary" disabled>■ STOP</button><button id="chaos" class="secondary" disabled>⚡ CHAOS</button><span class="muted" id="status">Eén groove. Een voortdurend veranderende wereld.</span></div><div class="panel"><div class="knobs"><div><label>DRIVE <output id="driveV">45%</output></label><input id="drive" aria-label="Drive" type="range" min="0" max="100" value="45"></div><div><label>MUTATIE <output id="mutationV">55%</output></label><input id="mutation" aria-label="Mutatie" type="range" min="0" max="100" value="55"></div><div><label>RUIMTE <output id="spaceV">40%</output></label><input id="space" aria-label="Echo en galm" type="range" min="0" max="100" value="40"></div><div><label>VOLUME <output id="volumeV">65%</output></label><input id="volume" aria-label="Volume" type="range" min="0" max="100" value="65"></div></div><label style="justify-content:flex-start;align-items:center;margin-top:18px;cursor:pointer"><input id="pianoEnabled" type="checkbox" checked style="width:18px;height:18px;margin:0 9px 0 0">Piano aan <span class="muted">· uit: acid neemt de bovenlijn over</span></label><div class="voices" id="voices"></div><div class="steps" id="steps"></div><div class="journey" id="journey"></div><div class="info"><span id="detail">Begin bij 120 BPM · lange overgangen · autonome compositie</span><span id="next">Overnames om de 40–60 seconden</span></div></div><div class="panel"><small>MIXER · 100% = huidige balans</small><div class="knobs" style="margin-top:18px"><div><label for="mix_acid">ACID<output id="mix_acidV">100%</output></label><input id="mix_acid" aria-label="Volume ACID" type="range" min="0" max="150" value="100"></div><div><label for="mix_trance">TRANCELEAD<output id="mix_tranceV">100%</output></label><input id="mix_trance" aria-label="Volume TRANCELEAD" type="range" min="0" max="150" value="100"></div><div><label for="mix_bass">BAS<output id="mix_bassV">100%</output></label><input id="mix_bass" aria-label="Volume BAS" type="range" min="0" max="150" value="100"></div><div><label for="mix_pad">PAD<output id="mix_padV">100%</output></label><input id="mix_pad" aria-label="Volume PAD" type="range" min="0" max="150" value="100"></div><div><label for="mix_drums">DRUMS<output id="mix_drumsV">100%</output></label><input id="mix_drums" aria-label="Volume DRUMS" type="range" min="0" max="150" value="100"></div><div><label for="mix_piano">PIANO<output id="mix_pianoV">100%</output></label><input id="mix_piano" aria-label="Volume PIANO" type="range" min="0" max="150" value="100"></div><div><label for="mix_companion">TEGENSTEM<output id="mix_companionV">100%</output></label><input id="mix_companion" aria-label="Volume TEGENSTEM" type="range" min="0" max="150" value="100"></div><div><label for="mix_gothic">GOTHIC<output id="mix_gothicV">100%</output></label><input id="mix_gothic" aria-label="Volume GOTHIC" type="range" min="0" max="150" value="100"></div><div><label for="mix_strings">VIOOL<output id="mix_stringsV">100%</output></label><input id="mix_strings" aria-label="Volume VIOOL" type="range" min="0" max="150" value="100"></div></div></div><footer>Zelfstandige Web Audio-synthese · offline bruikbaar · geen samples of externe bestanden.<br>CHAOS geeft tijdelijk extra mutatie en filterspanning; de groove vindt daarna haar weg terug.</footer></div><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),choose=a=>a[Math.floor(Math.random()*a.length)],clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),hz=m=>440*2**((m-69)/12);
 let ctx,master,bus,driveNode,echo,echoGain,verbGain,noise,mainFilter,analyser,buffer,timer,running=false,step=0,bar=0,nextTime=0,startTime=0,bpm=120,targetBpm=120,epoch=0,nextChange=48,lastChange=0,changeTimes=[],beatBreakEnd=-1,nextBreak=24,chaosEnd=0,lastUi=0,pulse=0;
 let pianoEnabled=true;
+let longBassUntil=-1,acidSweepBar=-1;
 const moduleVolumes={acid:1,trance:1,bass:1,pad:1,drums:1,piano:1,companion:1,gothic:1,strings:1};
 let moduleGains={};
 function setupMixer(){moduleGains={};for(const key of Object.keys(moduleVolumes)){const node=gain(moduleVolumes[key]);node.connect(bus);moduleGains[key]=node;}}
@@ -31,7 +32,7 @@ function nextEnsemble(){
  return {...ensembleBag.pop()};
 }
 function pattern(){return Array.from({length:16},(_,i)=>({degree:choose([0,0,1,2,3]),on:i%4===0||Math.random()<.48,accent:i%4===0||Math.random()<.2,slide:Math.random()<.23,oct:Math.random()<.14?12:0}))}
-function reset(){lastTopPiano=-1;pianoVisit=-1;drumGroove=0;drumSection=0;
+function reset(){longBassUntil=-1;acidSweepBar=-1;lastTopPiano=-1;pianoVisit=-1;drumGroove=0;drumSection=0;
  openingTrance=choose([0,1,2]);
  const first=nextEnsemble();profiles[0]={...first};
  for(let i=1;i<6;i++)profiles[i]=nextEnsemble();
@@ -75,12 +76,13 @@ function prepareMetalEcho(){
  }
  metalEcho.delayTime.setTargetAtTime(60/bpm*.75,ctx.currentTime,.1);
 }
-function lead(t,m,variant,weight,accent,slide,duration,elapsed){if(weight<.002)return;const o=ctx.createOscillator(),f=ctx.createBiquadFilter(),a=gain();const freq=hz(m);o.type=['sawtooth','square','sawtooth'][variant];o.frequency.setValueAtTime(slide&&lastAcidHz?lastAcidHz:freq,t);o.frequency.exponentialRampToValueAtTime(freq,t+(slide?.10:.006));lastAcidHz=freq;f.type='lowpass';f.Q.value=[10,5,7][variant];const wave=.5+.5*Math.sin(elapsed*.19),chaos=elapsed<chaosEnd?1:0;f.frequency.setValueAtTime(180+wave*500,t);f.frequency.exponentialRampToValueAtTime(500+wave*2600+accent*1400+chaos*2000,t+.025);f.frequency.exponentialRampToValueAtTime(180+wave*350,t+duration);
+function lead(t,m,variant,weight,accent,slide,duration,elapsed,sweep=false){if(weight<.002)return;const o=ctx.createOscillator(),f=ctx.createBiquadFilter(),a=gain();const freq=hz(m);o.type=['sawtooth','square','sawtooth'][variant];o.frequency.setValueAtTime(slide&&lastAcidHz?lastAcidHz:freq,t);o.frequency.exponentialRampToValueAtTime(freq,t+(slide?.10:.006));lastAcidHz=freq;f.type='lowpass';f.Q.value=[10,5,7][variant];const wave=.5+.5*Math.sin(elapsed*.19),chaos=elapsed<chaosEnd?1:0;f.frequency.setValueAtTime(180+wave*500,t);f.frequency.exponentialRampToValueAtTime(500+wave*2600+accent*1400+chaos*2000,t+.025);f.frequency.exponentialRampToValueAtTime(180+wave*350,t+duration);
  // Long spectral transformations continue beyond the initial takeovers.
  const colourCycle=Math.floor(elapsed/40)%4,previousColour=(colourCycle+3)%4;
  const colourFade=clamp((elapsed%40)/8,0,1);
  const fade=colourFade*colourFade*(3-2*colourFade);
- const colourPaths=elapsed<40?[[0,1]]:[[previousColour,1-fade],[colourCycle,fade]];
+ if(sweep){f.Q.setValueAtTime(7,t);f.frequency.setValueAtTime(220,t);f.frequency.exponentialRampToValueAtTime(4200,t+duration*.65);f.frequency.exponentialRampToValueAtTime(300,t+duration);}
+ const colourPaths=sweep||elapsed<40?[[0,1]]:[[previousColour,1-fade],[colourCycle,fade]];
  o.connect(f);
  colourPaths.forEach(([colour,weight])=>{
   if(weight<.001)return;
@@ -92,11 +94,11 @@ function lead(t,m,variant,weight,accent,slide,duration,elapsed){if(weight<.002)r
   // High-pass colours bypass the dark low-pass stage to retain upper harmonics.
   if(colour===0)f.connect(tone);else o.connect(tone);
   tone.connect(level);level.connect(a);
- });a.connect(driveNode);if(variant===2){prepareMetalEcho();a.connect(metalEcho);}envelope(a,t,(accent?.051:.032)*weight,.006,duration);o.start(t);o.stop(t+duration+.02);
+ });a.connect(driveNode);if(variant===2){prepareMetalEcho();a.connect(metalEcho);}if(sweep){a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(.036*weight,t+.06);a.gain.setValueAtTime(.032*weight,t+duration*.8);a.gain.exponentialRampToValueAtTime(.0001,t+duration);}else envelope(a,t,(accent?.051:.032)*weight,.006,duration);o.start(t);o.stop(t+duration+.02);
  if(variant===2){const mod=ctx.createOscillator(),mg=gain(freq*.55);mod.frequency.value=freq*2.01;mod.connect(mg);mg.connect(o.frequency);mod.start(t);mod.stop(t+duration+.02)}}
-function bass(t,m,variant,w,duration){
+function bass(t,m,variant,w,duration,hold=false){
  if(w<.002)return;
- const sustained=variant>=3,a=gain(),f=ctx.createBiquadFilter();
+ const sustained=hold||variant>=3,a=gain(),f=ctx.createBiquadFilter();
  f.type='lowpass';f.frequency.setValueAtTime([360,680,900,440,270][variant],t);
  f.frequency.exponentialRampToValueAtTime(sustained?240:180,t+duration);f.Q.value=variant===2?2:.6;
  f.connect(a);a.connect(moduleGains.bass);
@@ -193,12 +195,23 @@ function orchestraState(elapsed){
  const fade=clamp((elapsed-360)/35,0,1);
  return fade*fade*(3-2*fade);
 }
+let stringsFxContext,stringsInput;
+function prepareStringsFx(){
+ if(stringsFxContext===ctx)return;
+ stringsFxContext=ctx;stringsInput=gain();stringsInput.connect(moduleGains.strings);
+ const delay=ctx.createDelay(2),tone=ctx.createBiquadFilter(),feedback=gain(.43),wet=gain(.42);
+ delay.delayTime.value=60/bpm*.75;tone.type='lowpass';tone.frequency.value=3400;
+ stringsInput.connect(delay);delay.connect(tone);tone.connect(feedback);feedback.connect(delay);tone.connect(wet);wet.connect(moduleGains.strings);
+ const reverb=ctx.createConvolver(),ir=ctx.createBuffer(2,Math.floor(ctx.sampleRate*3.6),ctx.sampleRate),room=gain(.32);
+ for(let c=0;c<2;c++){const data=ir.getChannelData(c);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length)**2.6;}
+ reverb.buffer=ir;stringsInput.connect(reverb);reverb.connect(room);room.connect(moduleGains.strings);
+}
 function gothicVoice(t,m,weight,duration,strings=false){
  if(weight<.002)return;
  const a=gain(),lp=ctx.createBiquadFilter(),pan=ctx.createStereoPanner();
  lp.type='lowpass';lp.frequency.value=strings?2100:1300;lp.Q.value=strings?.6:1.4;
- lp.connect(a);a.connect(pan);pan.pan.value=strings?-.23:.23;pan.connect(strings?moduleGains.strings:moduleGains.gothic);
- const peak=(strings?.021:.025)*weight;
+ lp.connect(a);a.connect(pan);pan.pan.value=strings?-.23:.23;if(strings)prepareStringsFx();pan.connect(strings?stringsInput:moduleGains.gothic);
+ const peak=(strings?.0378:.025)*weight;
  a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(peak,t+(strings?.07:.018));
  a.gain.setValueAtTime(peak*.75,t+duration*.65);a.gain.exponentialRampToValueAtTime(.0001,t+duration);
  [-5,5].forEach(det=>{
@@ -285,6 +298,11 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
  chordIndex=(composition.chord+harmonicHalf*(composition.counter%2?1:3))%4;
  const orchestra=orchestraState(elapsed);
  const chord=harmony[chordIndex];
+ // Later chapters alternate sustained bass phrases and occasional one-bar acid sweeps.
+ if(pos===0&&elapsed>=150&&bar%16===1&&Math.random()<.55)longBassUntil=bar+choose([4,8]);
+ if(pos===0&&elapsed>=180&&bar%8===0&&acidPresence>.55&&acidAge>24&&Math.random()<.32)acidSweepBar=bar;
+ const longBass=bar<longBassUntil,acidSweep=bar===acidSweepBar;
+
  const padVoicing=chord.slice(0,3).map((n,i)=>n+(i<composition.inversion?12:0)).sort((a,b)=>a-b);
  layers.forEach(([p,w])=>{if(!drumsOff){
  const grooves=[
@@ -315,10 +333,10 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
  }
 }
  if(bar>=3){
-  if(p.bass>=3){if(pos===0)bass(t,root+chord[0]-12,p.bass,w*bassPresence,sec*4+.35);}
+  if(p.bass>=3||longBass){if(pos===0)bass(t,root+chord[0]-12,p.bass,w*bassPresence,sec*4,longBass);}
   else if(pos===0||pos===6||pos===10){const n=bassPattern[pos];bass(t,root+chord[n.degree%3]-12,p.bass,w*bassPresence,sec*(p.bass===1?1.8:1.25));}
  }
- if(bar>=5){const n=acidPattern[pos],on=acidAge<0?false:acidAge<24&&acidEntrySparse?(bar%4===0&&pos===10):acidGate(pos,index);if(on){const degree=three?threeNotes[Math.floor(threeCounter/3)%3]:n.degree;lead(t,root+chord[degree]+(epoch===0?n.oct:(patternRevision%2?12:0)),p.lead,w*acidPresence,n.accent,n.slide,sec*(three?.76:n.slide?.96:.66),elapsed)}}
+ if(bar>=5){const n=acidPattern[pos],on=acidAge<0?false:acidAge<24&&acidEntrySparse?(bar%4===0&&pos===10):acidGate(pos,index);if(acidSweep?pos===0:on){const degree=acidSweep?0:three?threeNotes[Math.floor(threeCounter/3)%3]:n.degree;lead(t,root+chord[degree]+(epoch===0?n.oct:(patternRevision%2?12:0)),p.lead,w*acidPresence,n.accent,n.slide,acidSweep?sec*4:sec*(three?.76:n.slide?.96:.66),elapsed,acidSweep)}}
  if(bar>=3&&pos===0&&bar%4===3)pad(t,padVoicing.map(n=>root+n+12),p.pad,w*padPresence,sec*16+1);
  });threeCounter++;
  // A remembered four-bar melodic phrase follows the current harmony.
@@ -344,8 +362,8 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
    const note=candidates.reduce((best,n)=>Math.abs(n-target)<Math.abs(best-target)?n:best,candidates[0]);
    lastTopPiano=note;
    if(pianoEnabled)topPiano(t,note,pianoTop.mix*(pos>=12?.78:1));
-   else if(elapsed>=firstAcidTime)lead(t,note-12,current.lead,pianoTop.mix*.65,pos===2||pos===0,true,sec*.9,elapsed);
-   else tranceLead(t,note,openingTrance,pianoTop.mix*.5,sec*.9);
+   else if(elapsed>=firstAcidTime&&!acidSweep)lead(t,note-12,current.lead,pianoTop.mix*.65,pos===2||pos===0,true,sec*.9,elapsed);
+   else if(elapsed<firstAcidTime)tranceLead(t,note,openingTrance,pianoTop.mix*.5,sec*.9);
   }
  }
  if(orchestra>0){
@@ -357,8 +375,8 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
   }
   if([2,6,10,14].includes(pos)){
    const degree=[0,0,2,1][Math.floor(pos/4)];
-   if(chapter%2===0)bass(t,root+chord[degree]-12,1,orchestra*.43,sec*.65);
-   else gothicVoice(t,root+chord[degree]+12,orchestra*.8,sec*.65);
+   if(chapter%2===0&&!longBass)bass(t,root+chord[degree]-12,1,orchestra*.43,sec*.65);
+   else if(chapter%2!==0)gothicVoice(t,root+chord[degree]+12,orchestra*.8,sec*.65);
   }
   // Strings join later, in phrases separated by breathing space.
   if(elapsed>=420&&bar%16<12&&[2,6,10,14].includes(pos)){
@@ -377,7 +395,7 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
   }
  }
 
- if(epoch>=5&&pos===10&&bar%4===0){const n=originalAcid[(bar+pos)%16];lead(t,root+chord[n.degree]+12,current.lead,.35*acidPresence,false,true,sec*.8,elapsed)}
+ if(!acidSweep&&epoch>=5&&pos===10&&bar%4===0){const n=originalAcid[(bar+pos)%16];lead(t,root+chord[n.degree]+12,current.lead,.35*acidPresence,false,true,sec*.8,elapsed)}
  if(pos===0){events.push({t,ui:true,bar,epoch,bpm,elapsed,transition:mix,bassVariant:current.bass,leadVariant:current.lead,padVariant:current.pad,drumVariant:current.drum,drumsOff,three});}events.push({t,pos});}
 let breakStart=-1,drumFadeBreak=false;
 function tick(){
@@ -396,6 +414,7 @@ function tick(){
 async function start(){if(running)return;try{if(!ctx)setup();else{await ctx.close();setup();}await ctx.resume();reset();breakStart=-1;drumFadeBreak=false;startTime=ctx.currentTime+.1;nextTime=startTime;running=true;timer=setInterval(tick,25);tick();$('start').disabled=true;$('stop').disabled=false;$('chaos').disabled=false;$('status').textContent='De groove ontwaakt…';}catch(e){$('status').textContent='Audio kon niet starten: '+e.message;running=false;clearInterval(timer);$('start').disabled=false;}}
 async function stop(){running=false;clearInterval(timer);if(ctx)await ctx.suspend();$('start').disabled=false;$('stop').disabled=true;$('chaos').disabled=true;$('status').textContent='Gestopt · START begint een nieuwe reis.';}
 // Shared echo/chorus graphs live for the audio context; notes are short-lived.
+prepareStringsFx=sharedAudio(prepareStringsFx);
 prepareMetalEcho=sharedAudio(prepareMetalEcho);
 preparePianoEcho=sharedAudio(preparePianoEcho);
 prepareTranceFx=sharedAudio(prepareTranceFx);
