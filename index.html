@@ -1,12 +1,10 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE ACID MACHINE v0.26</title><style>
+<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE ACID MACHINE v0.21</title><style>
 :root{color-scheme:dark;font-family:system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;background:#080c0a;color:#e5f2e7}.wrap{max-width:1100px;margin:auto;padding:26px}header{display:flex;justify-content:space-between;align-items:center;gap:20px}h1{font-size:clamp(24px,5vw,43px);letter-spacing:.09em;margin:0}small,.muted{color:#8aab94}.badge{color:#b8ff57;border:1px solid #44652d;border-radius:30px;padding:8px 13px;font-size:12px;white-space:nowrap}.screen{position:relative;border:1px solid #334438;border-radius:18px;overflow:hidden;margin:24px 0;background:#050907}canvas{width:100%;height:330px;display:block}.hud{position:absolute;left:18px;right:18px;bottom:16px;display:flex;justify-content:space-between;font:12px monospace;color:#b8ff57}.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}button{border:1px solid #80af3f;border-radius:8px;background:#b8ff57;color:#101b08;padding:13px 22px;font-weight:800;cursor:pointer}button.secondary{background:#17231b;color:#c2d6c7;border-color:#3c5041}button:disabled{opacity:.35;cursor:default}.panel{margin-top:20px;background:#111b15;border:1px solid #304436;padding:20px;border-radius:14px}.knobs{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}label{display:flex;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.08em}input{width:100%;accent-color:#b8ff57;margin:15px 0 0}.voices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.voice{padding:16px;background:#0c140f;border:1px solid #293b2e;border-radius:10px}.voice small{font:10px monospace;letter-spacing:.12em}.voice strong{display:block;font-size:15px;margin:7px 0}.voice span{font-size:11px;color:#a0bcaa}.steps{display:grid;grid-template-columns:repeat(16,1fr);gap:5px;margin-top:18px}.step{height:22px;border-radius:3px;background:#283b2c}.step.note{background:#507c36}.step.on{background:#cbff8c;box-shadow:0 0 12px #aaff66}.journey{display:flex;gap:5px;margin:20px 0 8px}.stage{flex:1;height:4px;background:#293b2e}.stage.active{background:#b8ff57}.info{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#9fb6a5;line-height:1.6}footer{margin-top:22px;color:#6d8a77;font-size:11px;line-height:1.7}@media(max-width:650px){.wrap{padding:16px}.knobs,.voices{grid-template-columns:repeat(2,1fr)}canvas{height:270px}header{align-items:flex-start}.badge{display:none}.info{display:block}.steps{gap:3px}}
-</style><div class="wrap"><header><div><h1>THE ACID MACHINE</h1><small>v0.26 · MUTATION → TAKEOVER → SYNTHESIS</small></div><span class="badge">Kris &amp; Omnia · 01</span></header><div class="screen"><canvas id="viz"></canvas><div class="hud"><span id="phase">READY TO MUTATE</span><span id="clock">00:00 · 120 BPM</span></div></div><div class="actions"><button id="start">▶ START</button><button id="stop" class="secondary" disabled>■ STOP</button><button id="chaos" class="secondary" disabled>⚡ CHAOS</button><span class="muted" id="status">Eén groove. Een voortdurend veranderende wereld.</span></div><div class="panel"><div class="knobs"><div><label>DRIVE <output id="driveV">45%</output></label><input id="drive" aria-label="Drive" type="range" min="0" max="100" value="45"></div><div><label>MUTATIE <output id="mutationV">55%</output></label><input id="mutation" aria-label="Mutatie" type="range" min="0" max="100" value="55"></div><div><label>RUIMTE <output id="spaceV">40%</output></label><input id="space" aria-label="Echo en galm" type="range" min="0" max="100" value="40"></div><div><label>VOLUME <output id="volumeV">65%</output></label><input id="volume" aria-label="Volume" type="range" min="0" max="100" value="65"></div></div><label style="justify-content:flex-start;align-items:center;margin-top:18px;cursor:pointer"><input id="pianoEnabled" type="checkbox" checked style="width:18px;height:18px;margin:0 9px 0 0">Piano aan <span class="muted">· uit: acid neemt de bovenlijn over</span></label><div class="voices" id="voices"></div><div class="steps" id="steps"></div><div class="journey" id="journey"></div><div class="info"><span id="detail">Begin bij 120 BPM · lange overgangen · autonome compositie</span><span id="next">Overnames om de 40–60 seconden</span></div></div><footer>Zelfstandige Web Audio-synthese · offline bruikbaar · geen samples of externe bestanden.<br>CHAOS geeft tijdelijk extra mutatie en filterspanning; de groove vindt daarna haar weg terug.</footer></div><script>
+</style><div class="wrap"><header><div><h1>THE ACID MACHINE</h1><small>v0.21 · MUTATION → TAKEOVER → SYNTHESIS</small></div><span class="badge">Kris &amp; Omnia · 01</span></header><div class="screen"><canvas id="viz"></canvas><div class="hud"><span id="phase">READY TO MUTATE</span><span id="clock">00:00 · 120 BPM</span></div></div><div class="actions"><button id="start">▶ START</button><button id="stop" class="secondary" disabled>■ STOP</button><button id="chaos" class="secondary" disabled>⚡ CHAOS</button><span class="muted" id="status">Eén groove. Een voortdurend veranderende wereld.</span></div><div class="panel"><div class="knobs"><div><label>DRIVE <output id="driveV">45%</output></label><input id="drive" aria-label="Drive" type="range" min="0" max="100" value="45"></div><div><label>MUTATIE <output id="mutationV">55%</output></label><input id="mutation" aria-label="Mutatie" type="range" min="0" max="100" value="55"></div><div><label>RUIMTE <output id="spaceV">40%</output></label><input id="space" aria-label="Echo en galm" type="range" min="0" max="100" value="40"></div><div><label>VOLUME <output id="volumeV">65%</output></label><input id="volume" aria-label="Volume" type="range" min="0" max="100" value="65"></div></div><div class="voices" id="voices"></div><div class="steps" id="steps"></div><div class="journey" id="journey"></div><div class="info"><span id="detail">Begin bij 120 BPM · lange overgangen · autonome compositie</span><span id="next">Overnames om de 40–60 seconden</span></div></div><footer>Zelfstandige Web Audio-synthese · offline bruikbaar · geen samples of externe bestanden.<br>CHAOS geeft tijdelijk extra mutatie en filterspanning; de groove vindt daarna haar weg terug.</footer></div><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),choose=a=>a[Math.floor(Math.random()*a.length)],clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),hz=m=>440*2**((m-69)/12);
 let ctx,master,bus,driveNode,echo,echoGain,verbGain,noise,mainFilter,analyser,buffer,timer,running=false,step=0,bar=0,nextTime=0,startTime=0,bpm=120,targetBpm=120,epoch=0,nextChange=48,lastChange=0,changeTimes=[],beatBreakEnd=-1,nextBreak=24,chaosEnd=0,lastUi=0,pulse=0;
-let pianoEnabled=true;
 const settings={drive:.45,mutation:.55,space:.40,volume:.65};
-let firstAcidTime=90,acidEntrySparse=true;
 let openingTrance=-1,drumGroove=0,drumSection=0;
 let acidRestStart=-1,acidRestEnd=-1,nextAcidRest=21;
 let acidRhythm=0,acidRhythmBars=8,nextAcidRhythmBar=13;
@@ -27,45 +25,14 @@ function reset(){lastTopPiano=-1;pianoVisit=-1;drumGroove=0;drumSection=0;
   profiles[i][key]=choose(Array.from({length:limit},(_,n)=>n).filter(n=>n!==profiles[i-1][key]));
  }
  acidRestStart=-1;acidRestEnd=-1;nextAcidRest=21;acidRhythm=0;acidRhythmBars=8;nextAcidRhythmBar=13;step=0;bar=0;bpm=120;targetBpm=120;epoch=0;lastChange=0;nextChange=40+Math.random()*12;changeTimes=[];nextBreak=24;beatBreakEnd=-1;chaosEnd=0;three=false;threeCounter=0;patternRevision=0;events=[];lastAcidHz=0;chordIndex=0;current={...profiles[0]};previous={...current};acidPattern=pattern();bassPattern=pattern();originalAcid=acidPattern.map(x=>({...x}));originalBass=bassPattern.map(x=>({...x}));threeNotes=[0,2,1];}
-// Reclaim every per-note audio graph after its final source has ended.
-let voiceScope=null,activeVoiceGraphs=0;
-function installVoiceTracking(){
- for(const method of ['createGain','createBiquadFilter','createOscillator','createBufferSource','createStereoPanner']){
-  const original=ctx[method].bind(ctx);
-  ctx[method]=(...args)=>{const node=original(...args);if(voiceScope)voiceScope.nodes.push(node);return node;};
- }
-}
-function trackVoice(fn){return function(...args){
- const parent=voiceScope,scope={nodes:[]};voiceScope=scope;
- try{return fn(...args);}finally{
-  voiceScope=parent;
-  const sources=scope.nodes.filter(n=>typeof n.start==='function'&&typeof n.stop==='function');
-  if(sources.length){activeVoiceGraphs++;let remaining=sources.length;
-   sources.forEach(source=>source.addEventListener('ended',()=>{
-    if(--remaining===0){scope.nodes.forEach(n=>{try{n.disconnect();}catch{}});scope.nodes.length=0;activeVoiceGraphs--;}
-   },{once:true}));
-  }else scope.nodes.forEach(n=>{try{n.disconnect();}catch{}});
- }
-};}
-function sharedAudio(fn){return function(...args){const parent=voiceScope;voiceScope=null;try{return fn(...args);}finally{voiceScope=parent;}};}
 function gain(value=1){const g=ctx.createGain();g.gain.value=value;return g}
-function setup(){ctx=new(window.AudioContext||window.webkitAudioContext)();master=gain(settings.volume*.75);const comp=ctx.createDynamicsCompressor();comp.threshold.value=-18;comp.ratio.value=5;comp.knee.value=18;master.connect(comp);const outputBoost=gain(1.8);comp.connect(outputBoost);const limiter=ctx.createDynamicsCompressor();limiter.threshold.value=-2;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.003;limiter.release.value=.12;outputBoost.connect(limiter);limiter.connect(ctx.destination);analyser=ctx.createAnalyser();analyser.fftSize=256;master.connect(analyser);buffer=new Uint8Array(analyser.frequencyBinCount);bus=gain(.7);mainFilter=ctx.createBiquadFilter();mainFilter.type='lowpass';mainFilter.frequency.value=15000;bus.connect(mainFilter);mainFilter.connect(master);driveNode=ctx.createWaveShaper();driveNode.oversample='2x';const acidOutput=gain(.09375);driveNode.connect(acidOutput);acidOutput.connect(bus);
+function setup(){ctx=new(window.AudioContext||window.webkitAudioContext)();master=gain(settings.volume*.75);const comp=ctx.createDynamicsCompressor();comp.threshold.value=-18;comp.ratio.value=5;comp.knee.value=18;master.connect(comp);const outputBoost=gain(1.8);comp.connect(outputBoost);const limiter=ctx.createDynamicsCompressor();limiter.threshold.value=-2;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.003;limiter.release.value=.12;outputBoost.connect(limiter);limiter.connect(ctx.destination);analyser=ctx.createAnalyser();analyser.fftSize=256;master.connect(analyser);buffer=new Uint8Array(analyser.frequencyBinCount);bus=gain(.7);mainFilter=ctx.createBiquadFilter();mainFilter.type='lowpass';mainFilter.frequency.value=15000;bus.connect(mainFilter);mainFilter.connect(master);driveNode=ctx.createWaveShaper();driveNode.oversample='2x';const acidOutput=gain(.0625);driveNode.connect(acidOutput);acidOutput.connect(bus);
  echo=ctx.createDelay(2);echo.delayTime.value=.375;const fb=gain(.35);echoGain=gain(.18);echo.connect(fb);fb.connect(echo);echo.connect(echoGain);echoGain.connect(master);bus.connect(echo);
  const con=ctx.createConvolver(),ir=ctx.createBuffer(2,ctx.sampleRate*2.7,ctx.sampleRate);for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length)**3}con.buffer=ir;verbGain=gain(.1);bus.connect(con);con.connect(verbGain);verbGain.connect(master);
- noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;fx();installVoiceTracking();}
+ noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;fx();}
 function fx(){if(!ctx)return;const k=5+settings.drive*65,curve=new Float32Array(2048);for(let i=0;i<curve.length;i++){const x=i*2/(curve.length-1)-1;curve[i]=Math.tanh(k*x)/Math.tanh(k)}driveNode.curve=curve;master.gain.setTargetAtTime(settings.volume*.75,ctx.currentTime,.05);echoGain.gain.setTargetAtTime(settings.space*.36,ctx.currentTime,.1);verbGain.gain.setTargetAtTime(settings.space*.22,ctx.currentTime,.1)}
 function envelope(a,t,peak,attack,duration){a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(Math.max(.0002,peak),t+attack);a.gain.exponentialRampToValueAtTime(.0001,t+Math.max(attack+.01,duration))}
 function drum(t,kind,variant,weight){if(weight<.002)return;const a=gain();a.connect(bus);if(kind==='kick'){const o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime([140,180,110][variant],t);o.frequency.exponentialRampToValueAtTime([43,48,38][variant],t+.18);o.connect(a);envelope(a,t,.64*weight,.004,.42);o.start(t);o.stop(t+.44)}else{const n=ctx.createBufferSource(),f=ctx.createBiquadFilter();n.buffer=noise;f.type=kind==='hat'?'highpass':'bandpass';f.frequency.value=kind==='hat'?[6800,8500,4800][variant]:[1600,2300,1100][variant];f.Q.value=.6;n.connect(f);f.connect(a);envelope(a,t,(kind==='hat'?.065:.15)*weight,.003,kind==='hat'?.075:.18);n.start(t);n.stop(t+.22)}events.push({t,s:kind==='kick'?1:.3,pos:step%16});}
-let metalEchoContext,metalEcho;
-function prepareMetalEcho(){
- if(metalEchoContext!==ctx){
-  metalEchoContext=ctx;metalEcho=ctx.createDelay(2);
-  const tone=ctx.createBiquadFilter(),feedback=gain(.61),out=gain(.48);
-  tone.type='lowpass';tone.frequency.value=2800;tone.Q.value=.55;
-  metalEcho.connect(tone);tone.connect(feedback);feedback.connect(metalEcho);tone.connect(out);out.connect(bus);
- }
- metalEcho.delayTime.setTargetAtTime(60/bpm*.75,ctx.currentTime,.1);
-}
 function lead(t,m,variant,weight,accent,slide,duration,elapsed){if(weight<.002)return;const o=ctx.createOscillator(),f=ctx.createBiquadFilter(),a=gain();const freq=hz(m);o.type=['sawtooth','square','sawtooth'][variant];o.frequency.setValueAtTime(slide&&lastAcidHz?lastAcidHz:freq,t);o.frequency.exponentialRampToValueAtTime(freq,t+(slide?.10:.006));lastAcidHz=freq;f.type='lowpass';f.Q.value=[10,5,7][variant];const wave=.5+.5*Math.sin(elapsed*.19),chaos=elapsed<chaosEnd?1:0;f.frequency.setValueAtTime(180+wave*500,t);f.frequency.exponentialRampToValueAtTime(500+wave*2600+accent*1400+chaos*2000,t+.025);f.frequency.exponentialRampToValueAtTime(180+wave*350,t+duration);
  // Long spectral transformations continue beyond the initial takeovers.
  const colourCycle=Math.floor(elapsed/40)%4,previousColour=(colourCycle+3)%4;
@@ -83,7 +50,7 @@ function lead(t,m,variant,weight,accent,slide,duration,elapsed){if(weight<.002)r
   // High-pass colours bypass the dark low-pass stage to retain upper harmonics.
   if(colour===0)f.connect(tone);else o.connect(tone);
   tone.connect(level);level.connect(a);
- });a.connect(driveNode);if(variant===2){prepareMetalEcho();a.connect(metalEcho);}envelope(a,t,(accent?.051:.032)*weight,.006,duration);o.start(t);o.stop(t+duration+.02);
+ });a.connect(driveNode);envelope(a,t,(accent?.051:.032)*weight,.006,duration);o.start(t);o.stop(t+duration+.02);
  if(variant===2){const mod=ctx.createOscillator(),mg=gain(freq*.55);mod.frequency.value=freq*2.01;mod.connect(mg);mg.connect(o.frequency);mod.start(t);mod.stop(t+duration+.02)}}
 function bass(t,m,variant,w,duration){
  if(w<.002)return;
@@ -104,10 +71,7 @@ function advance(elapsed){if(epoch<5){previous={...current};epoch++;current={...
 // Soft companion voice: a two-bar answer held for sixteen bars at a time.
 // Three trance voices alternate in minute-long takeovers, with four-second fades.
 function tranceState(elapsed){
- if(elapsed<firstAcidTime+16){
-  const x=clamp(Math.min(elapsed/8,(firstAcidTime+16-elapsed)/16),0,1);
-  return {mix:x*x*(3-2*x),variant:(openingTrance+Math.floor(elapsed/72))%3};
- }
+ if(elapsed<80){const x=clamp(Math.min(elapsed/8,(80-elapsed)/16),0,1);return {mix:x*x*(3-2*x),variant:openingTrance};}
  if(elapsed<150)return {mix:0,variant:0};
  const visit=Math.floor((elapsed-150)/150),phase=(elapsed-150)%150;
  if(phase>=68)return {mix:0,variant:visit%3};
@@ -160,43 +124,23 @@ function pianoState(elapsed){
  const x=phase<28?clamp(Math.min(phase/3,(28-phase)/4),0,1):0;
  return {mix:x*x*(3-2*x),visit};
 }
-let pianoEcho,pianoEchoContext,pianoOutput;
+let pianoEcho,pianoEchoContext;
 function preparePianoEcho(){
  if(pianoEchoContext!==ctx){
-  pianoEchoContext=ctx;pianoEcho=ctx.createDelay(2);pianoOutput=gain(pianoEnabled?1:0);pianoOutput.connect(bus);
+  pianoEchoContext=ctx;pianoEcho=ctx.createDelay(2);
   const tone=ctx.createBiquadFilter(),feedback=gain(.47),out=gain(.48);
   tone.type='lowpass';tone.frequency.value=2900;tone.Q.value=.5;
-  pianoEcho.connect(tone);tone.connect(feedback);feedback.connect(pianoEcho);tone.connect(out);out.connect(pianoOutput);
+  pianoEcho.connect(tone);tone.connect(feedback);feedback.connect(pianoEcho);tone.connect(out);out.connect(bus);
  }
  pianoEcho.delayTime.setTargetAtTime(60/bpm*.75,ctx.currentTime,.08);
 }
 function topPiano(t,m,weight){
  const a=gain(),lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(4800,t);lp.frequency.exponentialRampToValueAtTime(1200,t+2.8);lp.Q.value=.5;
- lp.connect(a);preparePianoEcho();a.connect(pianoOutput);a.connect(pianoEcho);
+ lp.connect(a);a.connect(bus);preparePianoEcho();a.connect(pianoEcho);
  a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(.0264375*weight,t+.007);
  a.gain.exponentialRampToValueAtTime(.007875*weight,t+.23);a.gain.exponentialRampToValueAtTime(.0001,t+3.8);
  [[1,1],[2,.27],[3,.11],[4,.035]].forEach(([ratio,level])=>{
   const o=ctx.createOscillator(),v=gain(level);o.type='sine';o.frequency.value=hz(m)*ratio*(ratio>1?1+.0003*ratio:1);o.connect(v);v.connect(lp);o.start(t);o.stop(t+3.85);
- });
-}
-// Late orchestral chapter: offbeat techno, dark synth and rhythmic strings.
-function orchestraState(elapsed){
- const fade=clamp((elapsed-360)/35,0,1);
- return fade*fade*(3-2*fade);
-}
-function gothicVoice(t,m,weight,duration,strings=false){
- if(weight<.002)return;
- const a=gain(),lp=ctx.createBiquadFilter(),pan=ctx.createStereoPanner();
- lp.type='lowpass';lp.frequency.value=strings?2100:1300;lp.Q.value=strings?.6:1.4;
- lp.connect(a);a.connect(pan);pan.pan.value=strings?-.23:.23;pan.connect(bus);
- const peak=(strings?.021:.025)*weight;
- a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(peak,t+(strings?.07:.018));
- a.gain.setValueAtTime(peak*.75,t+duration*.65);a.gain.exponentialRampToValueAtTime(.0001,t+duration);
- [-5,5].forEach(det=>{
-  const o=ctx.createOscillator(),v=gain(.38),vibrato=ctx.createOscillator(),depth=gain(strings?3.5:1);
-  o.type=strings?'sawtooth':'triangle';o.frequency.value=hz(m);o.detune.value=det;
-  vibrato.frequency.value=strings?5.2:3;vibrato.connect(depth);depth.connect(o.detune);
-  o.connect(v);v.connect(lp);o.start(t);vibrato.start(t);o.stop(t+duration+.03);vibrato.stop(t+duration+.03);
  });
 }
 function companion(t,m,duration){
@@ -234,7 +178,7 @@ function tempoForPassage(elapsed){
  if(intense)return choose([132,134,136,138,140]);
  return choose([124,126,128,130,132]);
 }
-function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){bar++;if(elapsed>=56&&bar%16===1){drumGroove=(drumGroove+choose([1,2,3,4]))%5;drumSection=choose([0,0,0,1,2]);}if(bar===nextAcidRest){acidRestStart=bar;acidRestEnd=bar+4;nextAcidRest=acidRestEnd+choose([16,24,24]);}if(bar>=nextAcidRhythmBar){acidRhythm=(acidRhythm+choose([1,2,3,4,5]))%6;acidRhythmBars=choose([8,8,16]);nextAcidRhythmBar=bar+acidRhythmBars;}if(elapsed>=nextChange)advance(elapsed);if(bar>4&&bar%8===1){if(elapsed<360)chordIndex=(chordIndex+1)%4;acidPattern=mutate(acidPattern,settings.mutation*(elapsed<chaosEnd?.8:.22));if(bar%16===1)three=Math.random()<(.12+settings.mutation*.20);threeCounter=0;}if(bar===nextBreak){beatBreakEnd=bar+choose([4,8]);nextBreak=bar+choose([24,32,40]);}if(bar>8&&bar%16===1&&epoch>=5){acidPattern=mutate(originalAcid,.25);}}
+function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){bar++;if(elapsed>=56&&bar%16===1){drumGroove=(drumGroove+choose([1,2,3,4]))%5;drumSection=choose([0,0,0,1,2]);}if(bar===nextAcidRest){acidRestStart=bar;acidRestEnd=bar+4;nextAcidRest=acidRestEnd+choose([16,24,24]);}if(bar>=nextAcidRhythmBar){acidRhythm=(acidRhythm+choose([1,2,3,4,5]))%6;acidRhythmBars=choose([8,8,16]);nextAcidRhythmBar=bar+acidRhythmBars;}if(elapsed>=nextChange)advance(elapsed);if(bar>4&&bar%8===1){chordIndex=(chordIndex+1)%4;acidPattern=mutate(acidPattern,settings.mutation*(elapsed<chaosEnd?.8:.22));if(bar%16===1)three=Math.random()<(.12+settings.mutation*.20);threeCounter=0;}if(bar===nextBreak){beatBreakEnd=bar+choose([4,8]);nextBreak=bar+choose([24,32,40]);}if(bar>8&&bar%16===1&&epoch>=5){acidPattern=mutate(originalAcid,.25);}}
  if(pos===0&&(bar%8===1||bar===breakStart||bar===beatBreakEnd||bar===acidRestStart))targetBpm=tempoForPassage(elapsed);
  const tempoInBreak=bar>=breakStart&&bar<beatBreakEnd;
  bpm=clamp(bpm+clamp((clamp(targetBpm,120,140)-bpm)*(tempoInBreak?.012:.004),-.04,.04),120,140);const sec=60/bpm,transition=clamp((elapsed-lastChange)/12,0,1),mix=transition*transition*(3-2*transition);
@@ -257,15 +201,12 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
  }else if(barPosition>=nextAcidRest-1&&barPosition<nextAcidRest){acidPresence=smooth(nextAcidRest-barPosition);}
  const pianoTop=pianoState(elapsed);
  const trance=tranceState(elapsed);
- acidPresence*=1-(pianoEnabled?pianoTop.mix*.25:0);
- const acidAge=elapsed-firstAcidTime;
- acidPresence*=acidAge<0?0:acidAge<24?(acidEntrySparse?.35:smooth(acidAge/8)):1-trance.mix*.78;
+ acidPresence*=1-pianoTop.mix*.25;
+ acidPresence*=elapsed<32?0:elapsed<64?.3:elapsed<80?smooth((elapsed-64)/16):1-trance.mix;
  // Separate short rests leave room for the remaining voices.
  const bassPresence=bar>=25&&bar%32>=25&&bar%32<=28?0:1;
  const padPresence=bar>=35&&bar%48>=35&&bar%48<=42?0:1;
 
- if(pos===0&&elapsed>=360&&bar%4===1)chordIndex=(chordIndex+1)%4;
- const orchestra=orchestraState(elapsed);
  const chord=harmony[chordIndex];
  layers.forEach(([p,w])=>{if(!drumsOff){
  const grooves=[
@@ -299,7 +240,7 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
   if(p.bass>=3){if(pos===0)bass(t,root+chord[0]-12,p.bass,w*bassPresence,sec*4+.35);}
   else if(pos===0||pos===6||pos===10){const n=bassPattern[pos];bass(t,root+chord[n.degree%3]-12,p.bass,w*bassPresence,sec*(p.bass===1?1.8:1.25));}
  }
- if(bar>=5){const n=acidPattern[pos],on=acidAge<0?false:acidAge<24&&acidEntrySparse?(bar%4===0&&pos===10):acidGate(pos,index);if(on){const degree=three?threeNotes[Math.floor(threeCounter/3)%3]:n.degree;lead(t,root+chord[degree]+(epoch===0?n.oct:(patternRevision%2?12:0)),p.lead,w*acidPresence,n.accent,n.slide,sec*(three?.76:n.slide?.96:.66),elapsed)}}
+ if(bar>=5){const n=acidPattern[pos],on=elapsed<64?(elapsed>=32&&bar%4===0&&pos===10):elapsed<80?([2,10].includes(pos)):acidGate(pos,index);if(on){const degree=three?threeNotes[Math.floor(threeCounter/3)%3]:n.degree;lead(t,root+chord[degree]+(epoch===0?n.oct:(patternRevision%2?12:0)),p.lead,w*acidPresence,n.accent,n.slide,sec*(three?.76:n.slide?.96:.66),elapsed)}}
  if(bar>=3&&pos===0&&bar%4===3)pad(t,chord.map(n=>root+n+12),p.pad,w*padPresence,sec*16+1);
  });threeCounter++;
  // A remembered four-bar melodic phrase follows the current harmony.
@@ -309,7 +250,7 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
    const melodies=[[0,1,2,1,0,2,1,2],[0,2,1,0,1,2,1,0],[2,1,0,1,2,1,2,0]];
    const phraseIndex=(Math.floor(pos/2)+(bar%4)*2)%8;
    const degree=melodies[trance.variant][phraseIndex];
-   tranceLead(t,root+chord[degree]+24,trance.variant,trance.mix*(1-pianoTop.mix*(pianoEnabled?.25:.45)),sec*(elapsed<40?1.7:trance.variant===2?.95:trance.variant===1?.48:.7));
+   tranceLead(t,root+chord[degree]+24,trance.variant,trance.mix*(1-pianoTop.mix*.25),sec*(elapsed<40?1.7:trance.variant===2?.95:trance.variant===1?.48:.7));
   }
  }
  if(pianoTop.mix>0){
@@ -323,29 +264,7 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
    const close=pool.filter(n=>lastTopPiano<0||Math.abs(n-lastTopPiano)<=5);
    const candidates=close.length?close:pool;
    const note=candidates.reduce((best,n)=>Math.abs(n-target)<Math.abs(best-target)?n:best,candidates[0]);
-   lastTopPiano=note;
-   if(pianoEnabled)topPiano(t,note,pianoTop.mix*(pos>=12?.78:1));
-   else if(elapsed>=firstAcidTime)lead(t,note-12,current.lead,pianoTop.mix*.65,pos===2||pos===0,true,sec*.9,elapsed);
-   else tranceLead(t,note,openingTrance,pianoTop.mix*.5,sec*.9);
-  }
- }
- if(orchestra>0){
-  const chapter=Math.floor((elapsed-360)/32)%4;
-  // Backbeat answered on offbeat eighths: kick on the beat, line in between.
-  if(!drumsOff&&[0,4,8,12].includes(pos)){
-   const existing=elapsed<56?[0,4,8,12]:[[0,4,8,12],[0,6,8,14],[0,7,10],[0,4,11,14],[0,3,8,10]][drumGroove];
-   if(!existing.includes(pos)||drumSection!==0)drum(t,'kick',current.drum,orchestra*drumPresence*.6);
-  }
-  if([2,6,10,14].includes(pos)){
-   const degree=[0,0,2,1][Math.floor(pos/4)];
-   if(chapter%2===0)bass(t,root+chord[degree]-12,1,orchestra*.43,sec*.65);
-   else gothicVoice(t,root+chord[degree]+12,orchestra*.8,sec*.65);
-  }
-  // Strings join later, in phrases separated by breathing space.
-  if(elapsed>=420&&bar%16<12&&[2,6,10,14].includes(pos)){
-   const contour=[0,1,2,1,0,2,1,0],degree=contour[(bar%4*2+(pos>=8?1:0))%8];
-   gothicVoice(t,root+chord[degree]+24,orchestra*.85,sec*.9,true);
-   if(pos===2||pos===10)gothicVoice(t,root+chord[(degree+2)%3]+12,orchestra*.32,sec*1.3,true);
+   lastTopPiano=note;topPiano(t,note,pianoTop.mix*(pos>=12?.78:1));
   }
  }
  // Leave the first eight bars for the original voices. Answer in a stable phrase.
@@ -361,32 +280,12 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
  if(epoch>=5&&pos===10&&bar%4===0){const n=originalAcid[(bar+pos)%16];lead(t,root+chord[n.degree]+12,current.lead,.35*acidPresence,false,true,sec*.8,elapsed)}
  if(pos===0){events.push({t,ui:true,bar,epoch,bpm,elapsed,transition:mix,bassVariant:current.bass,leadVariant:current.lead,padVariant:current.pad,drumVariant:current.drum,drumsOff,three});}events.push({t,pos});}
 let breakStart=-1,drumFadeBreak=false;
-function tick(){
- if(!running)return;const now=ctx.currentTime;
- // Drop missed wall-clock time instead of scheduling stale notes in a burst.
- if(nextTime<now-.08)nextTime=now+.035;
- let guard=0;
- while(nextTime<now+.18&&guard++<8){
-  if(step%16===0&&bar+1===nextBreak)breakStart=bar+1;
-  schedule(nextTime,step);step++;nextTime+=60/bpm/4;
- }
- // Hidden tabs may not draw, but their visual event queue must stay bounded.
- if(events.length>256)events.splice(0,events.length-128);
-}
-
+function tick(){if(!running)return;const now=ctx.currentTime;let guard=0;while(nextTime<now+.14&&guard++<64){if(step%16===0&&bar+1===nextBreak)breakStart=bar+1;schedule(nextTime,step);step++;nextTime+=60/bpm/4;}if(nextTime<now-.5)nextTime=now+.05;}
 async function start(){if(running)return;try{if(!ctx)setup();else{await ctx.close();setup();}await ctx.resume();reset();breakStart=-1;drumFadeBreak=false;startTime=ctx.currentTime+.1;nextTime=startTime;running=true;timer=setInterval(tick,25);tick();$('start').disabled=true;$('stop').disabled=false;$('chaos').disabled=false;$('status').textContent='De groove ontwaakt…';}catch(e){$('status').textContent='Audio kon niet starten: '+e.message;running=false;clearInterval(timer);$('start').disabled=false;}}
 async function stop(){running=false;clearInterval(timer);if(ctx)await ctx.suspend();$('start').disabled=false;$('stop').disabled=true;$('chaos').disabled=true;$('status').textContent='Gestopt · START begint een nieuwe reis.';}
-// Shared echo/chorus graphs live for the audio context; notes are short-lived.
-prepareMetalEcho=sharedAudio(prepareMetalEcho);
-preparePianoEcho=sharedAudio(preparePianoEcho);
-prepareTranceFx=sharedAudio(prepareTranceFx);
-drum=trackVoice(drum);lead=trackVoice(lead);bass=trackVoice(bass);pad=trackVoice(pad);
-tranceLead=trackVoice(tranceLead);topPiano=trackVoice(topPiano);
-gothicVoice=trackVoice(gothicVoice);companion=trackVoice(companion);
-$('pianoEnabled').onchange=e=>{pianoEnabled=e.target.checked;if(ctx&&pianoEchoContext===ctx)pianoOutput.gain.setTargetAtTime(pianoEnabled?1:0,ctx.currentTime,.04);};
 $('start').onclick=start;$('stop').onclick=stop;$('chaos').onclick=()=>{chaosEnd=ctx.currentTime-startTime+16;acidPattern=mutate(acidPattern,.6);$('status').textContent='CHAOS · tijdelijke filterspanning en mutatie';};
 for(const key of Object.keys(settings))$(key).oninput=e=>{settings[key]=+e.target.value/100;$(key+'V').textContent=e.target.value+'%';fx()};
-function updateUi(e){const tranceNow=tranceState(e.elapsed);const tranceNames=['Prism · spectral','Glass · velvet','Halo · fluid'];const spectral=tranceNow.mix>.1?tranceNames[tranceNow.variant]:['ROUND','HIGH-PASS','BAND-PASS','AIR / HIGH-PASS'][Math.floor(e.elapsed/40)%4];const phase=e.epoch===0?'AWAKENING':e.epoch<5?'TAKEOVER '+e.epoch:'SYNTHESIS';$('phase').textContent=phase+' · '+(e.elapsed>=420?'ELECTRONIC ORCHESTRA · ':e.elapsed>=360?'OFFBEAT CHAPTER · ':pianoState(e.elapsed).mix>.1?(pianoEnabled?'PIANO TOPLINE · ':'ACID TOPLINE · '):'')+spectral+(e.drumsOff?' · WEIGHTLESS':e.three?' · 3-STEP':' · '+['1/8','OFFBEAT','SYNCOPATIE','ANTWOORD','RUIMTE','TUSSENSLAGEN'][acidRhythm]);$('clock').textContent=String(Math.floor(e.elapsed/60)).padStart(2,'0')+':'+String(Math.floor(e.elapsed%60)).padStart(2,'0')+' · '+Math.round(e.bpm)+' BPM';const labels=['LEAD','BASS','PAD','DRUMS'];$('voices').innerHTML=labels.map((l,i)=>{const key=['lead','bass','pad','drum'][i],n=i===1?['Sub · pulse','Mini · round','Rubber · FM','Deep · sustain','Sub · velvet'][e.bassVariant??current.bass]:i===0?(tranceNow.mix>.1?tranceNames[tranceNow.variant]:['303 · phosphor','Glass · pulse','Metal · sequence'][e.leadVariant??current.lead]):i===2?['Haze · dark','Shimmer · drift','Orbit · suspended'][e.padVariant??current.pad]:['Circuit · dry','Chrome · tight','Dust · broken'][e.drumVariant??current.drum];return '<div class="voice"><small>'+l+'</small><strong>'+n+'</strong><span>'+(e.drumsOff&&i===3?'Drumpauze':e.transition<1&&e.epoch>0?'Nieuwe stem neemt over':'In de groove')+'</span></div>'}).join('');[...$('journey').children].forEach((d,i)=>d.classList.toggle('active',i<=Math.min(e.epoch,5)));$('detail').textContent='Maat '+e.bar+' · '+(e.epoch>=5?'Beginmotieven keren terug in de nieuwe bezetting':e.epoch===0?'De eerste groove bouwt zich op':'Langzame overname · nieuw tempo '+targetBpm+' BPM');$('next').textContent='Volgende overname over circa '+Math.max(0,Math.ceil(nextChange-e.elapsed))+' sec';$('status').textContent=e.drumsOff?'Even gewichtloos · synths dragen het nummer':e.elapsed<chaosEnd?'CHAOS · vindt straks de groove terug':e.epoch>=5?'Nieuwe stemmen, herinneringen aan het begin.':'De compositie verandert van binnenuit.';}
+function updateUi(e){const tranceNow=tranceState(e.elapsed);const tranceNames=['Prism · spectral','Glass · velvet','Halo · fluid'];const spectral=tranceNow.mix>.1?tranceNames[tranceNow.variant]:['ROUND','HIGH-PASS','BAND-PASS','AIR / HIGH-PASS'][Math.floor(e.elapsed/40)%4];const phase=e.epoch===0?'AWAKENING':e.epoch<5?'TAKEOVER '+e.epoch:'SYNTHESIS';$('phase').textContent=phase+' · '+(pianoState(e.elapsed).mix>.1?'PIANO TOPLINE · ':'')+spectral+(e.drumsOff?' · WEIGHTLESS':e.three?' · 3-STEP':' · '+['1/8','OFFBEAT','SYNCOPATIE','ANTWOORD','RUIMTE','TUSSENSLAGEN'][acidRhythm]);$('clock').textContent=String(Math.floor(e.elapsed/60)).padStart(2,'0')+':'+String(Math.floor(e.elapsed%60)).padStart(2,'0')+' · '+Math.round(e.bpm)+' BPM';const labels=['LEAD','BASS','PAD','DRUMS'];$('voices').innerHTML=labels.map((l,i)=>{const key=['lead','bass','pad','drum'][i],n=i===1?['Sub · pulse','Mini · round','Rubber · FM','Deep · sustain','Sub · velvet'][e.bassVariant??current.bass]:i===0?(tranceNow.mix>.1?tranceNames[tranceNow.variant]:['303 · phosphor','Glass · pulse','Metal · sequence'][e.leadVariant??current.lead]):i===2?['Haze · dark','Shimmer · drift','Orbit · suspended'][e.padVariant??current.pad]:['Circuit · dry','Chrome · tight','Dust · broken'][e.drumVariant??current.drum];return '<div class="voice"><small>'+l+'</small><strong>'+n+'</strong><span>'+(e.drumsOff&&i===3?'Drumpauze':e.transition<1&&e.epoch>0?'Nieuwe stem neemt over':'In de groove')+'</span></div>'}).join('');[...$('journey').children].forEach((d,i)=>d.classList.toggle('active',i<=Math.min(e.epoch,5)));$('detail').textContent='Maat '+e.bar+' · '+(e.epoch>=5?'Beginmotieven keren terug in de nieuwe bezetting':e.epoch===0?'De eerste groove bouwt zich op':'Langzame overname · nieuw tempo '+targetBpm+' BPM');$('next').textContent='Volgende overname over circa '+Math.max(0,Math.ceil(nextChange-e.elapsed))+' sec';$('status').textContent=e.drumsOff?'Even gewichtloos · synths dragen het nummer':e.elapsed<chaosEnd?'CHAOS · vindt straks de groove terug':e.epoch>=5?'Nieuwe stemmen, herinneringen aan het begin.':'De compositie verandert van binnenuit.';}
 const canvas=$('viz'),g=canvas.getContext('2d');let width=0,height=0;function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*d;canvas.height=r.height*d;g.setTransform(d,0,0,d,0,0);width=r.width;height=r.height;}window.addEventListener('resize',resize);resize();
 function draw(ms){requestAnimationFrame(draw);if(ctx&&running){while(events.length&&events[0].t<=ctx.currentTime){const e=events.shift();if(e.ui)updateUi(e);if(e.s)pulse=Math.max(pulse,e.s);if(e.pos!==undefined)[...$('steps').children].forEach((d,i)=>{d.classList.toggle('on',i===e.pos);d.classList.toggle('note',!!acidPattern[i]?.on)})}analyser.getByteFrequencyData(buffer)}pulse*=.91;g.fillStyle='rgba(5,9,7,.19)';g.fillRect(0,0,width,height);const time=ms*.001,cx=width/2,cy=height*.47,R=Math.min(width*.35,height*.35);g.save();g.translate(cx,cy);g.globalCompositeOperation='lighter';for(let layer=0;layer<3;layer++){g.beginPath();g.strokeStyle=['#b8ff57','#28dbb1','#f7a83c'][layer];g.globalAlpha=.45;g.lineWidth=.65;for(let i=0;i<=240;i++){const a=i/240*Math.PI*2,r=R*(.72+.18*Math.sin(a*(3+layer)+time*.3)+.12*Math.cos(a*7-time))*(1+pulse*.13),twist=time*(.12+layer*.035);const x=Math.cos(a+twist)*r,y=Math.sin(a+twist)*r;const j=(i*(3+layer)+Math.sin(time*.15)*16)%240,b=j/240*Math.PI*2;g.moveTo(x,y);g.lineTo(Math.cos(b-twist)*R*.8,Math.sin(b-twist)*R*.8)}g.stroke()}g.restore();if(buffer&&running){g.fillStyle='#8fb957';for(let i=0;i<64;i++){const h=buffer[i]/255*35;g.fillRect(width/2-160+i*5,height-45-h,3,h)}}}
 requestAnimationFrame(draw);reset();updateUi({epoch:0,elapsed:0,bpm:120,bar:0,transition:1,drumsOff:false,three:false});$('next').textContent='Overnames om de 40–60 seconden';
