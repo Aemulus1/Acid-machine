@@ -196,15 +196,15 @@ function orchestraState(elapsed){
 function gothicVoice(t,m,weight,duration,strings=false){
  if(weight<.002)return;
  const a=gain(),lp=ctx.createBiquadFilter(),pan=ctx.createStereoPanner();
- lp.type='lowpass';lp.frequency.value=strings?2100:1300;lp.Q.value=strings?.6:1.4;
+ lp.type='lowpass';lp.frequency.value=strings?1550:1300;lp.Q.value=strings?.45:1.4;
  lp.connect(a);a.connect(pan);pan.pan.value=strings?-.23:.23;pan.connect(strings?moduleGains.strings:moduleGains.gothic);
- const peak=(strings?.021:.025)*weight;
- a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(peak,t+(strings?.07:.018));
+ const peak=(strings?.011:.025)*weight;
+ a.gain.setValueAtTime(.0001,t);a.gain.linearRampToValueAtTime(peak,t+(strings?.13:.018));
  a.gain.setValueAtTime(peak*.75,t+duration*.65);a.gain.exponentialRampToValueAtTime(.0001,t+duration);
  [-5,5].forEach(det=>{
-  const o=ctx.createOscillator(),v=gain(.38),vibrato=ctx.createOscillator(),depth=gain(strings?3.5:1);
-  o.type=strings?'sawtooth':'triangle';o.frequency.value=hz(m);o.detune.value=det;
-  vibrato.frequency.value=strings?5.2:3;vibrato.connect(depth);depth.connect(o.detune);
+  const o=ctx.createOscillator(),v=gain(.38),vibrato=ctx.createOscillator(),depth=gain(strings?1.4:1);
+  o.type=strings?'sawtooth':'triangle';o.frequency.value=hz(m);o.detune.value=strings?det*.4:det;
+  vibrato.frequency.value=strings?4.6:3;vibrato.connect(depth);depth.connect(o.detune);
   o.connect(v);v.connect(lp);o.start(t);vibrato.start(t);o.stop(t+duration+.03);vibrato.stop(t+duration+.03);
  });
 }
@@ -364,10 +364,10 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
    else gothicVoice(t,root+chord[degree]+12,orchestra*.8,sec*.65);
   }
   // Strings join later, in phrases separated by breathing space.
-  if(elapsed>=420&&bar%16<12&&[2,6,10,14].includes(pos)){
+  if(elapsed>=420&&bar%16<12&&[2,10].includes(pos)){
    const contour=[0,1,2,1,0,2,1,0],degree=contour[(bar%4*2+(pos>=8?1:0))%8];
-   gothicVoice(t,root+chord[degree]+24,orchestra*.85,sec*.9,true);
-   if(pos===2||pos===10)gothicVoice(t,root+chord[(degree+2)%3]+12,orchestra*.32,sec*1.3,true);
+   gothicVoice(t,root+chord[degree]+24,orchestra*.7,sec*1.3,true);
+   if(pos===2||pos===10)gothicVoice(t,root+chord[(degree+2)%3]+12,orchestra*.24,sec*1.5,true);
   }
  }
  // Leave the first eight bars for the original voices. Answer in a stable phrase.
