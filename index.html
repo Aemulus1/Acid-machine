@@ -1,11 +1,11 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE ACID MACHINE v0.17</title><style>
+<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THE ACID MACHINE v0.14</title><style>
 :root{color-scheme:dark;font-family:system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;background:#080c0a;color:#e5f2e7}.wrap{max-width:1100px;margin:auto;padding:26px}header{display:flex;justify-content:space-between;align-items:center;gap:20px}h1{font-size:clamp(24px,5vw,43px);letter-spacing:.09em;margin:0}small,.muted{color:#8aab94}.badge{color:#b8ff57;border:1px solid #44652d;border-radius:30px;padding:8px 13px;font-size:12px;white-space:nowrap}.screen{position:relative;border:1px solid #334438;border-radius:18px;overflow:hidden;margin:24px 0;background:#050907}canvas{width:100%;height:330px;display:block}.hud{position:absolute;left:18px;right:18px;bottom:16px;display:flex;justify-content:space-between;font:12px monospace;color:#b8ff57}.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}button{border:1px solid #80af3f;border-radius:8px;background:#b8ff57;color:#101b08;padding:13px 22px;font-weight:800;cursor:pointer}button.secondary{background:#17231b;color:#c2d6c7;border-color:#3c5041}button:disabled{opacity:.35;cursor:default}.panel{margin-top:20px;background:#111b15;border:1px solid #304436;padding:20px;border-radius:14px}.knobs{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}label{display:flex;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.08em}input{width:100%;accent-color:#b8ff57;margin:15px 0 0}.voices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.voice{padding:16px;background:#0c140f;border:1px solid #293b2e;border-radius:10px}.voice small{font:10px monospace;letter-spacing:.12em}.voice strong{display:block;font-size:15px;margin:7px 0}.voice span{font-size:11px;color:#a0bcaa}.steps{display:grid;grid-template-columns:repeat(16,1fr);gap:5px;margin-top:18px}.step{height:22px;border-radius:3px;background:#283b2c}.step.note{background:#507c36}.step.on{background:#cbff8c;box-shadow:0 0 12px #aaff66}.journey{display:flex;gap:5px;margin:20px 0 8px}.stage{flex:1;height:4px;background:#293b2e}.stage.active{background:#b8ff57}.info{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#9fb6a5;line-height:1.6}footer{margin-top:22px;color:#6d8a77;font-size:11px;line-height:1.7}@media(max-width:650px){.wrap{padding:16px}.knobs,.voices{grid-template-columns:repeat(2,1fr)}canvas{height:270px}header{align-items:flex-start}.badge{display:none}.info{display:block}.steps{gap:3px}}
-</style><div class="wrap"><header><div><h1>THE ACID MACHINE</h1><small>v0.17 · MUTATION → TAKEOVER → SYNTHESIS</small></div><span class="badge">Kris &amp; Omnia · 01</span></header><div class="screen"><canvas id="viz"></canvas><div class="hud"><span id="phase">READY TO MUTATE</span><span id="clock">00:00 · 120 BPM</span></div></div><div class="actions"><button id="start">▶ START</button><button id="stop" class="secondary" disabled>■ STOP</button><button id="chaos" class="secondary" disabled>⚡ CHAOS</button><span class="muted" id="status">Eén groove. Een voortdurend veranderende wereld.</span></div><div class="panel"><div class="knobs"><div><label>DRIVE <output id="driveV">45%</output></label><input id="drive" aria-label="Drive" type="range" min="0" max="100" value="45"></div><div><label>MUTATIE <output id="mutationV">55%</output></label><input id="mutation" aria-label="Mutatie" type="range" min="0" max="100" value="55"></div><div><label>RUIMTE <output id="spaceV">40%</output></label><input id="space" aria-label="Echo en galm" type="range" min="0" max="100" value="40"></div><div><label>VOLUME <output id="volumeV">65%</output></label><input id="volume" aria-label="Volume" type="range" min="0" max="100" value="65"></div></div><div class="voices" id="voices"></div><div class="steps" id="steps"></div><div class="journey" id="journey"></div><div class="info"><span id="detail">Begin bij 120 BPM · lange overgangen · autonome compositie</span><span id="next">Overnames om de 40–60 seconden</span></div></div><footer>Zelfstandige Web Audio-synthese · offline bruikbaar · geen samples of externe bestanden.<br>CHAOS geeft tijdelijk extra mutatie en filterspanning; de groove vindt daarna haar weg terug.</footer></div><script>
+</style><div class="wrap"><header><div><h1>THE ACID MACHINE</h1><small>v0.14 · MUTATION → TAKEOVER → SYNTHESIS</small></div><span class="badge">Kris &amp; Omnia · 01</span></header><div class="screen"><canvas id="viz"></canvas><div class="hud"><span id="phase">READY TO MUTATE</span><span id="clock">00:00 · 120 BPM</span></div></div><div class="actions"><button id="start">▶ START</button><button id="stop" class="secondary" disabled>■ STOP</button><button id="chaos" class="secondary" disabled>⚡ CHAOS</button><span class="muted" id="status">Eén groove. Een voortdurend veranderende wereld.</span></div><div class="panel"><div class="knobs"><div><label>DRIVE <output id="driveV">45%</output></label><input id="drive" aria-label="Drive" type="range" min="0" max="100" value="45"></div><div><label>MUTATIE <output id="mutationV">55%</output></label><input id="mutation" aria-label="Mutatie" type="range" min="0" max="100" value="55"></div><div><label>RUIMTE <output id="spaceV">40%</output></label><input id="space" aria-label="Echo en galm" type="range" min="0" max="100" value="40"></div><div><label>VOLUME <output id="volumeV">65%</output></label><input id="volume" aria-label="Volume" type="range" min="0" max="100" value="65"></div></div><div class="voices" id="voices"></div><div class="steps" id="steps"></div><div class="journey" id="journey"></div><div class="info"><span id="detail">Begin bij 120 BPM · lange overgangen · autonome compositie</span><span id="next">Overnames om de 40–60 seconden</span></div></div><footer>Zelfstandige Web Audio-synthese · offline bruikbaar · geen samples of externe bestanden.<br>CHAOS geeft tijdelijk extra mutatie en filterspanning; de groove vindt daarna haar weg terug.</footer></div><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),choose=a=>a[Math.floor(Math.random()*a.length)],clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),hz=m=>440*2**((m-69)/12);
 let ctx,master,bus,driveNode,echo,echoGain,verbGain,noise,mainFilter,analyser,buffer,timer,running=false,step=0,bar=0,nextTime=0,startTime=0,bpm=120,targetBpm=120,epoch=0,nextChange=48,lastChange=0,changeTimes=[],beatBreakEnd=-1,nextBreak=24,chaosEnd=0,lastUi=0,pulse=0;
 const settings={drive:.45,mutation:.55,space:.40,volume:.65};
-let openingTrance=-1,drumGroove=0,drumSection=0;
+let openingTrance=-1;
 let acidRestStart=-1,acidRestEnd=-1,nextAcidRest=21;
 let acidRhythm=0,acidRhythmBars=8,nextAcidRhythmBar=13;
 let acidPattern=[],bassPattern=[],originalAcid=[],originalBass=[],chordIndex=0,three=false,threeCounter=0,threeNotes=[],events=[],lastAcidHz=0;
@@ -15,8 +15,8 @@ const profiles=[{lead:0,bass:0,pad:0,drum:0},{lead:0,bass:1,pad:0,drum:0},{lead:
 let previous={...profiles[0]},current={...profiles[0]},patternRevision=0;
 for(let i=0;i<16;i++){const d=document.createElement('div');d.className='step';$('steps').append(d)}for(let i=0;i<6;i++){const d=document.createElement('div');d.className='stage';$('journey').append(d)}
 function pattern(){return Array.from({length:16},(_,i)=>({degree:choose([0,0,1,2,3]),on:i%4===0||Math.random()<.48,accent:i%4===0||Math.random()<.2,slide:Math.random()<.23,oct:Math.random()<.14?12:0}))}
-function reset(){drumGroove=0;drumSection=0;
- openingTrance=choose([0,1,2]);
+function reset(){
+ openingTrance=choose([-1,-1,0,1,2]);
  const first={lead:choose([0,1,2]),bass:choose([0,1,2,3,4]),pad:choose([0,1,2]),drum:choose([0,1,2])};
  profiles[0]={...first};
  const changes=['bass','lead','drum','pad','bass'];
@@ -71,9 +71,8 @@ function advance(elapsed){if(epoch<5){previous={...current};epoch++;current={...
 // Soft companion voice: a two-bar answer held for sixteen bars at a time.
 // Three trance voices alternate in minute-long takeovers, with four-second fades.
 function tranceState(elapsed){
- if(elapsed<80){const x=clamp(Math.min(elapsed/8,(80-elapsed)/16),0,1);return {mix:x*x*(3-2*x),variant:openingTrance};}
- if(elapsed<150)return {mix:0,variant:0};
- const visit=Math.floor((elapsed-150)/150),phase=(elapsed-150)%150;
+ if(elapsed<75){if(openingTrance<0||elapsed>=68)return {mix:0,variant:0};const x=clamp(Math.min(elapsed/4,(68-elapsed)/4),0,1);return {mix:x*x*(3-2*x),variant:openingTrance};}
+ const visit=Math.floor((elapsed-75)/150),phase=(elapsed-75)%150;
  if(phase>=68)return {mix:0,variant:visit%3};
  const x=clamp(Math.min(phase/4,(68-phase)/4),0,1);
  return {mix:x*x*(3-2*x),variant:visit%3};
@@ -139,7 +138,7 @@ function acidGate(pos,index){
  if(phraseEnd&&settings.mutation>.45&&pos>=12&&acidRhythm===2)return true;
  return rhythms[acidRhythm].includes(pos);
 }
-function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){bar++;if(elapsed>=56&&bar%16===1){drumGroove=(drumGroove+choose([1,2,3,4]))%5;drumSection=choose([0,0,0,1,2]);}if(bar===nextAcidRest){acidRestStart=bar;acidRestEnd=bar+4;nextAcidRest=acidRestEnd+choose([16,24,24]);}if(bar>=nextAcidRhythmBar){acidRhythm=(acidRhythm+choose([1,2,3,4,5]))%6;acidRhythmBars=choose([8,8,16]);nextAcidRhythmBar=bar+acidRhythmBars;}if(elapsed>=nextChange)advance(elapsed);if(bar>4&&bar%8===1){chordIndex=(chordIndex+1)%4;acidPattern=mutate(acidPattern,settings.mutation*(elapsed<chaosEnd?.8:.22));if(bar%16===1)three=Math.random()<(.12+settings.mutation*.20);threeCounter=0;}if(bar===nextBreak){beatBreakEnd=bar+choose([4,8]);nextBreak=bar+choose([24,32,40]);}if(bar>8&&bar%16===1&&epoch>=5){acidPattern=mutate(originalAcid,.25);}}
+function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){bar++;if(bar===nextAcidRest){acidRestStart=bar;acidRestEnd=bar+4;nextAcidRest=acidRestEnd+choose([16,24,24]);}if(bar>=nextAcidRhythmBar){acidRhythm=(acidRhythm+choose([1,2,3,4,5]))%6;acidRhythmBars=choose([8,8,16]);nextAcidRhythmBar=bar+acidRhythmBars;}if(elapsed>=nextChange)advance(elapsed);if(bar>4&&bar%8===1){chordIndex=(chordIndex+1)%4;acidPattern=mutate(acidPattern,settings.mutation*(elapsed<chaosEnd?.8:.22));if(bar%16===1)three=Math.random()<(.12+settings.mutation*.20);threeCounter=0;}if(bar===nextBreak){beatBreakEnd=bar+choose([4,8]);nextBreak=bar+choose([24,32,40]);}if(bar>8&&bar%16===1&&epoch>=5){acidPattern=mutate(originalAcid,.25);}}
  bpm+=(targetBpm-bpm)*.012;const sec=60/bpm,transition=clamp((elapsed-lastChange)/12,0,1),mix=transition*transition*(3-2*transition);
  // Explicit break start is tracked separately to preserve four/eight bar duration.
  const drumsOff=bar>=breakStart&&bar<beatBreakEnd;
@@ -159,59 +158,32 @@ function schedule(t,index){const pos=index%16,elapsed=t-startTime;if(pos===0){ba
   acidPresence=barPosition<acidRestStart?smooth(acidRestStart-barPosition):barPosition<acidRestEnd?0:smooth(barPosition-acidRestEnd);
  }else if(barPosition>=nextAcidRest-1&&barPosition<nextAcidRest){acidPresence=smooth(nextAcidRest-barPosition);}
  const trance=tranceState(elapsed);
- acidPresence*=elapsed<32?0:elapsed<64?.3:elapsed<80?smooth((elapsed-64)/16):1-trance.mix;
+ acidPresence*=1-trance.mix;
  // Separate short rests leave room for the remaining voices.
  const bassPresence=bar>=25&&bar%32>=25&&bar%32<=28?0:1;
  const padPresence=bar>=35&&bar%48>=35&&bar%48<=42?0:1;
 
  const chord=harmony[chordIndex];
- layers.forEach(([p,w])=>{if(!drumsOff){
- const grooves=[
-  {kick:[0,4,8,12],hat:[2,6,10,14],clap:[4,12]},
-  {kick:[0,6,8,14],hat:[2,4,7,10,12,15],clap:[4,12]},
-  {kick:[0,7,10],hat:[0,2,6,8,10,14],clap:[4,12]},
-  {kick:[0,4,11,14],hat:[2,5,8,10,13,15],clap:[4,12]},
-  {kick:[0,3,8,10],hat:[2,6,9,12,14],clap:[4,11]}
- ];
- const groove=grooves[drumGroove],phraseBar=(bar-1)%16;
- const hatOnly=elapsed>=56&&drumSection===1&&phraseBar<4;
- const sparse=elapsed>=56&&drumSection===2&&phraseBar<8;
- const fill=elapsed>=56&&bar%8===0;
- const hatBuild=smooth((elapsed-12)/16),kickBuild=smooth((elapsed-24)/24),clapBuild=smooth((elapsed-40)/16);
- const kickPositions=elapsed<56?(p.drum===2?[0,6,10]:[0,4,8,12]):sparse?[0,8]:groove.kick;
- const introKick=elapsed<32?pos===0:elapsed<44?(pos===0||pos===8):kickPositions.includes(pos);
- if(!hatOnly&&introKick&&kickBuild>0)drum(t,'kick',p.drum,w*drumPresence*kickBuild);
- const hats=elapsed<56?(p.drum===2?[2,5,8,11,14]:[2,6,10,14]):groove.hat;
- const introHat=elapsed<24?pos===10:hats.includes(pos);
- const hatVelocity=pos%4===2?1:pos%2===0?.65:.43;
- if(introHat&&hatBuild>0)drum(t,'hat',p.drum,w*drumPresence*hatBuild*hatVelocity);
- const claps=elapsed<56?[4,12]:groove.clap;
- if(!hatOnly&&!sparse&&claps.includes(pos)&&clapBuild>0)drum(t,'clap',p.drum,w*drumPresence*clapBuild);
- // Brief phrase-end details, with lower velocity than the main groove.
- if(fill&&!hatOnly){
-  if([13,15].includes(pos)&&!hats.includes(pos))drum(t,'hat',p.drum,w*drumPresence*.4);
-  if(bar%16===0&&pos===14&&!claps.includes(pos))drum(t,'clap',p.drum,w*drumPresence*.27);
- }
-}
+ layers.forEach(([p,w])=>{if(!drumsOff){const kickPositions=p.drum===2?[0,6,10]:[0,4,8,12];if(kickPositions.includes(pos))drum(t,'kick',p.drum,w*drumPresence);if(bar>=3&&(pos===4||pos===12))drum(t,'clap',p.drum,w*drumPresence);if(bar>=2&&(p.drum===2?[2,5,8,11,14]:[2,6,10,14]).includes(pos))drum(t,'hat',p.drum,w*drumPresence);}
  if(bar>=3){
   if(p.bass>=3){if(pos===0)bass(t,root+chord[0]-12,p.bass,w*bassPresence,sec*4+.35);}
   else if(pos===0||pos===6||pos===10){const n=bassPattern[pos];bass(t,root+chord[n.degree%3]-12,p.bass,w*bassPresence,sec*(p.bass===1?1.8:1.25));}
  }
- if(bar>=5){const n=acidPattern[pos],on=elapsed<64?(elapsed>=32&&bar%4===0&&pos===10):elapsed<80?([2,10].includes(pos)):acidGate(pos,index);if(on){const degree=three?threeNotes[Math.floor(threeCounter/3)%3]:n.degree;lead(t,root+chord[degree]+(epoch===0?n.oct:(patternRevision%2?12:0)),p.lead,w*acidPresence,n.accent,n.slide,sec*(three?.76:n.slide?.96:.66),elapsed)}}
+ if(bar>=5){const n=acidPattern[pos],on=acidGate(pos,index);if(on){const degree=three?threeNotes[Math.floor(threeCounter/3)%3]:n.degree;lead(t,root+chord[degree]+(epoch===0?n.oct:(patternRevision%2?12:0)),p.lead,w*acidPresence,n.accent,n.slide,sec*(three?.76:n.slide?.96:.66),elapsed)}}
  if(bar>=3&&pos===0&&bar%4===3)pad(t,chord.map(n=>root+n+12),p.pad,w*padPresence,sec*16+1);
  });threeCounter++;
  // A remembered four-bar melodic phrase follows the current harmony.
  if(trance.mix>0){
-  const positions=elapsed<16?(bar%2===1?[10]:[]):elapsed<40?(bar%2===1?[2,10]:[10]):elapsed<64?[2,6,10,14]:trance.variant===1?[0,2,6,8,10,14]:[0,2,4,6,8,10,12,14];
+  const positions=trance.variant===1?[0,2,6,8,10,14]:[0,2,4,6,8,10,12,14];
   if(positions.includes(pos)){
    const melodies=[[0,1,2,1,0,2,1,2],[0,2,1,0,1,2,1,0],[2,1,0,1,2,1,2,0]];
    const phraseIndex=(Math.floor(pos/2)+(bar%4)*2)%8;
    const degree=melodies[trance.variant][phraseIndex];
-   tranceLead(t,root+chord[degree]+24,trance.variant,trance.mix,sec*(elapsed<40?1.7:trance.variant===2?.95:trance.variant===1?.48:.7));
+   tranceLead(t,root+chord[degree]+24,trance.variant,trance.mix,sec*(trance.variant===2?.95:trance.variant===1?.48:.7));
   }
  }
  // Leave the first eight bars for the original voices. Answer in a stable phrase.
- if(elapsed>=64&&bar>=9&&bar%24<16){
+ if(bar>=9&&bar%24<16){
   const answerPositions=bar%2===1?[6,14]:[2,10,14];
   if(answerPositions.includes(pos)){
    const contour=[0,1,2,1,0,2,1,0];
